@@ -48,8 +48,9 @@ main.o: main.cpp
 libeigenGbatch.a: eigen_GPU_batch.o
 	ar cr libeigenGbatch.a $<
 	ranlib libeigenGbatch.a 
+	$(HIPCC) -shared -o libeigenGbatchHIP.so eigen_GPU_batch.o -lhipsolver -lm -lgomp
 eigen_GPU_batch.o: eigen_GPU_batch.cu
-	$(HIPCC) -c -o $@ $< $(HIPCCOPT)
+	$(HIPCC) -c -o $@ -fPIC $< $(HIPCCOPT)
 	$(HIPCC) -S $< $(HIPCCOPT)
 eigen_GPU_check.o: eigen_GPU_check.cu
 	$(HIPCC) -c -o $@ $< $(HIPCCOPT)
